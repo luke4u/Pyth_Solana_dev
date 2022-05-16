@@ -1876,6 +1876,7 @@ dependencies = [
 name = "pyth_solana_dev1"
 version = "0.1.0"
 dependencies = [
+ "num-traits",
  "pyth-sdk-solana",
  "solana-client",
  "solana-program",
