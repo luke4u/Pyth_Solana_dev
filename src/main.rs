@@ -29,6 +29,12 @@ fn read_price(key: &String, url: &String) -> f64 {
     price
 }
 
+fn average(numbers: &[f64]) -> f64 {
+    let sum: f64 = numbers.iter().sum();
+    let count = numbers.len() as f64;
+    sum / count
+}
+
 fn main() {
     let url = String::from("http://api.mainnet-beta.solana.com");
     let btc_key = String::from("GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU");
@@ -71,10 +77,4 @@ fn main() {
         println!("current average price: {}", avg_price);
 
     }
-}
-
-fn average(numbers: &[f64]) -> f64 {
-    let sum: f64 = numbers.iter().sum();
-    let count = numbers.len() as f64;
-    sum / count
 }
