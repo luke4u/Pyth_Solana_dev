@@ -5,7 +5,7 @@ use std::str::FromStr;
 use std::option::Option;
 
 
-fn read_price(key: &String, url: &String) -> f32 {
+fn read_price(key: &String, url: &String) -> f64 {
     
     let clnt = RpcClient::new(url.to_string());
     let price_key = Pubkey::from_str(key).unwrap();
@@ -13,7 +13,6 @@ fn read_price(key: &String, url: &String) -> f32 {
     let mut price_account = clnt.get_account(&price_key).unwrap();
     let price_feed =
             load_price_feed_from_account(&price_key, &mut price_account).unwrap();
-    // let current_price: Price = price_feed.get_current_price().unwrap();
     let current_price: Option<Price> = price_feed.get_current_price();
     
     if current_price.is_none() {
@@ -21,12 +20,11 @@ fn read_price(key: &String, url: &String) -> f32 {
     } 
     
     let expo = current_price.unwrap().expo;
-    let base: f32 = 10.0;
-    let multipled_price: f32 = current_price.unwrap().price as f32;
+    let base: f64 = 10.0;
+    let multipled_price: f64 = current_price.unwrap().price as f64;
 
-    let price: f32 = multipled_price * base.powi(expo);
-
-    // println!("BTC price: ({} +- {}) x 10^{} ", current_price.price, current_price.conf, current_price.expo);
+    let price: f64 = multipled_price * base.powi(expo);
+    // println!("price: ({} +- {}) x 10^{} ", current_price.unwrap().price, current_price.unwrap().conf, current_price.unwrap().expo);
 
     price
 }
@@ -45,7 +43,7 @@ fn main() {
     let dot_key = String::from("EcV1X1gY2yb4KXxjVQtTHTbioum2gvmPnFk4zYAt7zne");
 
     loop {        
-        let mut price_array: [f32; 10] = [0.0; 10];
+        let mut price_array: [f64; 10] = [0.0; 10];
 
         let btc_price = read_price(&btc_key, &url);
         let eth_price = read_price(&eth_key, &url);
@@ -59,14 +57,14 @@ fn main() {
         let dot_price = read_price(&dot_key, &url);
         price_array[0] = btc_price;
         price_array[1] = eth_price;
-        price_array[1] = usdt_price;
-        price_array[1] = bnb_price;
-        price_array[1] = usdc_price;
-        price_array[1] = hxro_price;
-        price_array[1] = ada_price;
-        price_array[1] = sol_price;
-        price_array[1] = doge_price;
-        price_array[1] = dot_price;
+        price_array[2] = usdt_price;
+        price_array[3] = bnb_price;
+        price_array[4] = usdc_price;
+        price_array[5] = hxro_price;
+        price_array[6] = ada_price;
+        price_array[7] = sol_price;
+        price_array[8] = doge_price;
+        price_array[9] = dot_price;
 
 
         println!("current price: {:?}", price_array);
