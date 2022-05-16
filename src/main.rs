@@ -44,7 +44,7 @@ fn main() {
 
     loop {        
         let mut price_array: [f64; 10] = [0.0; 10];
-
+        let mut avg_price: f64 = 0.0;
         let btc_price = read_price(&btc_key, &url);
         let eth_price = read_price(&eth_key, &url);
         let usdt_price = read_price(&usdt_key, &url);
@@ -66,8 +66,15 @@ fn main() {
         price_array[8] = doge_price;
         price_array[9] = dot_price;
 
-
+        avg_price = average(&price_array);
         println!("current price: {:?}", price_array);
+        println!("current average price: {}", avg_price);
+
     }
 }
 
+fn average(numbers: &[f64]) -> f64 {
+    let sum: f64 = numbers.iter().sum();
+    let count = numbers.len() as f64;
+    sum / count
+}
