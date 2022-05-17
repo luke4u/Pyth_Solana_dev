@@ -4,6 +4,10 @@ use solana_client::rpc_client::RpcClient;
 use std::str::FromStr;
 use std::option::Option;
 
+extern crate chrono;
+use chrono::prelude::DateTime;
+use chrono::Utc;
+use std::time::{UNIX_EPOCH, Duration};
 
 fn read_price(key: &String, url: &String) -> f64 {
     
@@ -19,12 +23,15 @@ fn read_price(key: &String, url: &String) -> f64 {
         return -0.0001;
     } 
     
+    let publish_time = price_feed.publish_time as u64;
+    let publish_time_str = convert_timestamp(publish_time);
     let expo = current_price.unwrap().expo;
     let base: f64 = 10.0;
     let multipled_price: f64 = current_price.unwrap().price as f64;
 
     let price: f64 = multipled_price * base.powi(expo);
-    // println!("price: ({} +- {}) x 10^{} ", current_price.unwrap().price, current_price.unwrap().conf, current_price.unwrap().expo);
+    
+    println!("price: ({} +- {}) x 10^{} at {}", current_price.unwrap().price, current_price.unwrap().conf, current_price.unwrap().expo, publish_time_str);
 
     price
 }
@@ -33,6 +40,17 @@ fn average(numbers: &[f64]) -> f64 {
     let sum: f64 = numbers.iter().sum();
     let count = numbers.len() as f64;
     sum / count
+}
+
+fn convert_timestamp(timestamp: u64) -> String {
+    // Creates a new SystemTime from the specified number of whole seconds
+    let d = UNIX_EPOCH + Duration::from_secs(timestamp);
+    // Create DateTime from SystemTime
+    let datetime = DateTime::<Utc>::from(d);
+    // Formats the combined date and time with the specified format string.
+    let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
+    // println!{"{}",timestamp_str};
+    timestamp_str
 }
 
 fn main() {
