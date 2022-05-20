@@ -42,18 +42,15 @@ fn average(numbers: &[f64]) -> f64 {
     sum / count
 }
 
+// https://stackoverflow.com/questions/50072055/converting-unix-timestamp-to-readable-time-string-in-rust
 fn convert_timestamp(timestamp: u64) -> String {
-    // Creates a new SystemTime from the specified number of whole seconds
     let d = UNIX_EPOCH + Duration::from_secs(timestamp);
-    // Create DateTime from SystemTime
     let datetime = DateTime::<Utc>::from(d);
-    // Formats the combined date and time with the specified format string.
     let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
-    // println!{"{}",timestamp_str};
     timestamp_str
 }
 
-fn main() {
+fn consume_price_off_chain() {
     let url = String::from("http://api.mainnet-beta.solana.com");
     let btc_key = String::from("GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU");
     let eth_key = String::from("JBu1AL4obBcCMqKBBxhpWCNUt136ijcuMZLFvTP7iWdB");
@@ -95,4 +92,8 @@ fn main() {
         println!("current average price: {}", avg_price);
 
     }
+}
+
+fn main(){
+    consume_price_off_chain()
 }
